@@ -19,18 +19,13 @@ var Page = db.define('page', {
     date: {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
-    },
-
-    route:{
-    	get      : function()  {
-      var urlTitle = this.getDataValue('urlTitle');
-      // 'this' allows you to access attributes of the instance
-      return this.getDataValue('/wiki/') + ' (' + title + ')';
-    	}
     }
-    
-
-
+}, {
+  getterMethods: {
+    route: function() {
+      return '/wiki/' + this.urlTitle;
+    }
+  }
 });
 
 var User = db.define('user', {

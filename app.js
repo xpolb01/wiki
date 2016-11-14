@@ -1,18 +1,24 @@
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
-//const nunjucks = require('nunjucks');
-//const makesRouter = require('./routes');
+const bodyParser = require('body-parser');
+const router = require('./routes/wiki');
+var models = require('./models');
+const nunjucks = require('nunjucks');
 //const fs = require('fs');
 //const path = require('path');
 //const mime = require('mime');
-const bodyParser = require('body-parser');
 //const socketio = require('socket.io');
-var models = require('./models');
 
-app.use(morgan);
+app.engine('html', nunjucks.render);
+app.set('view engine', 'html');
+nunjucks.configure('views/',{ noCache: true});
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(morgan('dev'));
+app.use('/wiki', router);
 
 models.User.sync({})
 .then(function () {
