@@ -27,13 +27,16 @@ router.post('/',(req, res, next) => {
   // STUDENT ASSIGNMENT:
   // make sure we only redirect *after* our save is complete!
   // note: `.save` returns a promise or it can take a callback.
-  page.save()
+  page.save().then((page) => {
+    console.log(page);
+    res.send(page);
+  })
   .catch( err => {
-    let message = err.errors[0]['message'];
+    // let message = err.errors[0]['message'];
     if(err.status === undefined) {
       err.status = 404;
     }
-    res.render('error', { message: message, error: err })
+    res.render('error', { message: 'message', error: err })
   });
 });
 
